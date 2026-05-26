@@ -1,6 +1,3 @@
-// ✅ FIXED: Removed old buildscript{} block that was overriding settings.gradle
-// Plugin versions are now managed exclusively in settings.gradle (new DSL)
-
 allprojects {
     repositories {
         google()

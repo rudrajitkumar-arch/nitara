@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'colors.dart';
+import '../core/constants/colors.dart';
 
 class NitaraTheme {
   NitaraTheme._();
