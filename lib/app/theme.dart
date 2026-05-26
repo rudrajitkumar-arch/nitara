@@ -33,7 +33,7 @@ class NitaraTheme {
           ),
           iconTheme: const IconThemeData(color: NitaraColors.textDark),
         ),
-        cardTheme: CardTheme(
+        cardTheme: CardThemeData(
           color: Colors.white,
           elevation: 0,
           shape: RoundedRectangleBorder(
@@ -126,7 +126,7 @@ class NitaraTheme {
           ),
           iconTheme: const IconThemeData(color: Colors.white),
         ),
-        cardTheme: CardTheme(
+        cardTheme: CardThemeData(
           color: NitaraColors.surfaceDark,
           elevation: 0,
           shape: RoundedRectangleBorder(
