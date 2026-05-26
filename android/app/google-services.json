@@ -1,13 +1,13 @@
 {
   "project_info": {
-    "project_number": "YOUR_PROJECT_NUMBER",
-    "project_id": "nitara-pregnancy-app",
-    "storage_bucket": "nitara-pregnancy-app.appspot.com"
+    "project_number": "128496394713",
+    "project_id": "nitara-11e1a",
+    "storage_bucket": "nitara-11e1a.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:YOUR_PROJECT_NUMBER:android:YOUR_APP_ID",
+        "mobilesdk_app_id": "1:128496394713:android:0666c997ab8d35547739c8",
         "android_client_info": {
           "package_name": "com.nitara.pregnancyapp"
         }
@@ -15,7 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "YOUR_API_KEY_HERE"
+          "current_key": "AIzaSyDrSqXkLKRXLi4p5hMqCKhm3obpPd7m3bc"
         }
       ],
       "services": {

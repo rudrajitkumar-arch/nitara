@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_core/firebase_core.dart' show FirebaseException;
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../core/services/auth_service.dart';
@@ -68,8 +69,12 @@ class AuthProvider extends ChangeNotifier {
       await _authService.signUp(name: name, email: email, password: password);
       _setLoading(false);
       return true;
-    } on FirebaseAuthException catch (e) {
+    } on FirebaseException catch (e) {
       _error = _mapAuthError(e.code);
+      _setLoading(false);
+      return false;
+    } catch (_) {
+      _error = 'Unable to create your account right now. Please try again.';
       _setLoading(false);
       return false;
     }
@@ -85,8 +90,12 @@ class AuthProvider extends ChangeNotifier {
       await _authService.signIn(email: email, password: password);
       _setLoading(false);
       return true;
-    } on FirebaseAuthException catch (e) {
+    } on FirebaseException catch (e) {
       _error = _mapAuthError(e.code);
+      _setLoading(false);
+      return false;
+    } catch (_) {
+      _error = 'Unable to sign in right now. Please try again.';
       _setLoading(false);
       return false;
     }
@@ -133,13 +142,29 @@ class AuthProvider extends ChangeNotifier {
 
   String _mapAuthError(String code) {
     switch (code) {
-      case 'user-not-found': return 'No account found with this email.';
-      case 'wrong-password': return 'Incorrect password. Please try again.';
-      case 'email-already-in-use': return 'An account already exists with this email.';
-      case 'weak-password': return 'Password must be at least 6 characters.';
-      case 'invalid-email': return 'Please enter a valid email address.';
-      case 'network-request-failed': return 'Network error. Please check your connection.';
-      default: return 'Something went wrong. Please try again.';
+      case 'user-not-found':
+        return 'No account found with this email.';
+      case 'wrong-password':
+      case 'invalid-credential':
+        return 'Incorrect email or password. Please try again.';
+      case 'email-already-in-use':
+        return 'An account already exists with this email.';
+      case 'weak-password':
+        return 'Password must be at least 6 characters.';
+      case 'invalid-email':
+        return 'Please enter a valid email address.';
+      case 'network-request-failed':
+        return 'Network error. Please check your connection.';
+      case 'operation-not-allowed':
+        return 'Email/password login is not enabled in Firebase Authentication.';
+      case 'invalid-api-key':
+      case 'api-key-not-valid':
+      case 'app-not-authorized':
+      case 'configuration-not-found':
+      case 'project-not-found':
+        return 'Firebase is not configured for this app yet. Add your Firebase configuration and rebuild.';
+      default:
+        return 'Sign in failed ($code). Please try again.';
     }
   }
 }
