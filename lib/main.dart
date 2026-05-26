@@ -1,0 +1,70 @@
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:provider/provider.dart';
+import 'package:timezone/data/latest.dart' as tz;
+
+import 'app/app.dart';
+import 'firebase_options.dart';
+import 'core/services/notification_service.dart';
+import 'features/auth/providers/auth_provider.dart';
+import 'features/baby_growth/providers/baby_provider.dart';
+import 'features/health/providers/health_provider.dart';
+import 'features/nutrition/providers/nutrition_provider.dart';
+import 'features/yoga/providers/yoga_provider.dart';
+import 'features/reminders/providers/reminder_provider.dart';
+import 'features/profile/providers/profile_provider.dart';
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  // Firebase init — replace google-services.json with your real file
+  try {
+    await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
+  } catch (_) {
+    // App works offline without Firebase configured
+  }
+
+  // Hive for offline storage
+  await Hive.initFlutter();
+  await Hive.openBox('nitara_prefs');
+  await Hive.openBox('health_data');
+  await Hive.openBox('reminders');
+
+  // Timezone for notifications
+  tz.initializeTimeZones();
+
+  // Notification service
+  await NotificationService.instance.init();
+
+  // Lock to portrait
+  await SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown,
+  ]);
+
+  SystemChrome.setSystemUIOverlayStyle(
+    const SystemUiOverlayStyle(
+      statusBarColor: Colors.transparent,
+      statusBarIconBrightness: Brightness.dark,
+    ),
+  );
+
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => AuthProvider()),
+        ChangeNotifierProvider(create: (_) => BabyProvider()),
+        ChangeNotifierProvider(create: (_) => HealthProvider()),
+        ChangeNotifierProvider(create: (_) => NutritionProvider()),
+        ChangeNotifierProvider(create: (_) => YogaProvider()),
+        ChangeNotifierProvider(create: (_) => ReminderProvider()),
+        ChangeNotifierProvider(create: (_) => ProfileProvider()),
+      ],
+      child: const NitaraApp(),
+    ),
+  );
+}
