@@ -44,8 +44,9 @@ flutter {
 }
 
 dependencies {
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    // ✅ REMOVED: kotlin-stdlib-jdk7 with $kotlin_version var (Kotlin 2.0+ includes stdlib automatically)
     implementation "androidx.multidex:multidex:2.0.1"
-    coreLibraryDesugaring "com.android.tools.build:desugaring:1.5.4"
+    // ✅ FIXED: was "com.android.tools.build:desugaring:1.5.4" (wrong artifact — doesn't exist)
+    coreLibraryDesugaring "com.android.tools:desugar_jdk_libs:2.0.4"
     implementation platform("com.google.firebase:firebase-bom:32.3.1")
 }
